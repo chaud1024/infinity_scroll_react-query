@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import usePosts from "./hooks/usePosts";
 
 const Example1 = () => {
@@ -8,6 +8,8 @@ const Example1 = () => {
   // using the hook
   const { isLoading, isError, error, results, hasNextPage } = usePosts(pageNum); // pageNum state would be passed in
 
+  const lastPostRef = useRef();
+
   // if there's an error, return the error message
   if (isError) return <p className="center">Error: {error.message}</p>;
 
@@ -15,7 +17,8 @@ const Example1 = () => {
   const content = results.map((post, i) => {
     if (results.length === i + 1) {
       // that let us know the last element that we get from the results
-      console.log("last element");
+      // console.log("last element");
+      return <Post ref={lastPostRef} key={post.id} post={post} />;
     }
     return <Post key={post.id} post={post} />;
   });
