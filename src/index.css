@@ -44,6 +44,15 @@ p::first-letter {
   margin-bottom: 1em;
 }
 
+.btn {
+  padding: 24px;
+  background-color: coral;
+  border-radius: 12px;
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+}
+
 a:any-link {
   color: whitesmoke;
 }
