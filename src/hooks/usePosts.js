@@ -3,7 +3,7 @@ import { getPostsPage } from "../api/axios";
 
 const usePosts = (pageNum = 1) => {
   // usePosts excepts pageNum which has default value 1 in case it's not provided
-  const [result, setResult] = useState([]);
+  const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState({});
@@ -25,7 +25,7 @@ const usePosts = (pageNum = 1) => {
 
     getPostsPage(pageNum, { signal })
       .then((data) => {
-        setResult((prev) => [...prev, ...data]);
+        setResults((prev) => [...prev, ...data]);
         // this is an array : so it could have prev values
         setHasNextPage(Boolean(data.length));
         // boolean: 0 = false
@@ -48,7 +48,7 @@ const usePosts = (pageNum = 1) => {
     // if there's nothing to abourt this won't hurt anyting
   }, [pageNum]);
 
-  return { isLoading, isError, error, result, hasNextPage };
+  return { isLoading, isError, error, results, hasNextPage };
 };
 
 export default usePosts;
