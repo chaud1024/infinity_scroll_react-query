@@ -10,17 +10,27 @@ const Example1 = () => {
   const { isLoading, isError, error, results, hasNextPage } = usePosts(pageNum); // pageNum state would be passed in
 
   // using useRef fot the last post
-  // change name to intObserver
+  // change name to intObserver since we're going to use Intersection Observer
   const intObserver = useRef();
+
   const lastPostRef = useCallback(
     (post) => {
+      // if it's isLoading state for any reason, we will return, cuz we won't want whatever is about to happen
       if (isLoading) return;
 
+      // look at the current property which always have to do with the useRef
+      // disconnect() is saying that stop looking if we already have one there
       if (intObserver.current) intObserver.current.disconnect();
 
+      // this is also going to receive posts
+      // we'll call it post to stay consistent with what we're doing
       intObserver.current = new IntersectionObserver((posts) => {
+        // inside the function, IntersectionObserver calls below
+        // we're only going to have "this one ref" here, this one post
         if (posts[0].isIntersecting && hasNextPage) {
           console.log("we are near the last post");
+          // set pageNum
+          // when we update that pageNum
           setPageNum((prev) => prev + 1);
         }
       });
@@ -53,9 +63,9 @@ const Example1 = () => {
       </h1>
       {content}
       {isLoading && <p className="center">Loading More Posts...</p>}
-      <p className="center">
+      <span className="center btn">
         <a href="#top">Back to Top</a>
-      </p>
+      </span>
     </>
   );
 };
