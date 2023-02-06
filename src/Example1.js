@@ -27,6 +27,7 @@ const Example1 = () => {
       intObserver.current = new IntersectionObserver((posts) => {
         // inside the function, IntersectionObserver calls below
         // we're only going to have "this one ref" here, this one post
+        // so if posts[0] is intersecting and also it has nextPage-boolean
         if (posts[0].isIntersecting && hasNextPage) {
           console.log("we are near the last post");
           // set pageNum
@@ -37,6 +38,9 @@ const Example1 = () => {
 
       if (post) intObserver.current.observe(post);
     },
+    // useCallback has dependeny array
+    // what we're providing in the function : we're looking at isLoading, hasNextPage
+    // if they are changing, then useCallback needs to deliever a new lastPostRef
     [isLoading, hasNextPage]
   );
 
