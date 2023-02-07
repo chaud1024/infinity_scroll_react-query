@@ -9,7 +9,7 @@ const Post = React.forwardRef(({ post }, ref) => {
     <>
       <Title order={3}>{post.title}</Title>
       <Blockquote color="yellow" cite={`- Post ID : ${post.id}`}>
-        <Text className={classes.postBody}>{post.body}</Text>
+        <Text className={classes.postText}>{post.body}</Text>
       </Blockquote>
     </>
   );
@@ -34,7 +34,7 @@ export default Post;
 // we will get an error if we didn't use a forward ref in this component
 
 const useStyles = createStyles((theme, _params) => ({
-  postBody: {
+  postText: {
     color: theme.colors.gray[0]
   }
 }))

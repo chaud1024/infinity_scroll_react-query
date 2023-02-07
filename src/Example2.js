@@ -1,20 +1,44 @@
-import {  useRef, useCallback } from "react";
+import {  useRef, useCallback, useState, useEffect } from "react";
 import Post from "./Post";
 import { useInfiniteQuery } from "react-query";
 import { getPostsPage } from "./api/axios";
-import { Button, Text, Title } from "@mantine/core";
+import { Box, Button, Text, Title, createStyles } from "@mantine/core";
 import { ArrowBigTop } from "tabler-icons-react"
-import { createStyles } from '@mantine/core';
 
 
 const Example2 = () => {
   const { classes } = useStyles();
 
+  const [showButton, setShowButton] = useState(false)
+
+  const scrollToTop = () => {
+    window.scroll({
+        top: 0,
+        behavior: 'smooth'
+    })
+  }
+
+  useEffect(() => {
+    const handleShowButton = () => {
+        if (window.scrollY > 500) {
+            setShowButton(true)
+        } else {
+            setShowButton(false)
+        }
+    }
+
+    window.addEventListener("scroll", handleShowButton)
+    return () => {
+      window.removeEventListener("scroll", handleShowButton)
+    }
+  }, [])
+
+
   const { fetchNextPage, hasNextPage, isFetchingNextPage, data, status,  error } = useInfiniteQuery('/posts', ({ pageParam = 1 }) => getPostsPage(pageParam), {
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.length ? allPages.length + 1 : undefined
     }
-  }); 
+  });
 
   const intObserver = useRef();
 
@@ -49,11 +73,10 @@ const Example2 = () => {
       return <Post key={post.id} post={post} />;
     });
   })
-  
 
 
   return (
-    <>
+    <Box className={classes.wrapper}>
       <Title order={3} id="top">
         &infin; Infinite Query &amp; Scroll
         <br />
@@ -61,21 +84,31 @@ const Example2 = () => {
       </Title>
       {content}
       {isFetchingNextPage && <Text className="center">Loading More Posts...</Text>}
-      <Button component="a" href="#top" className={classes.btn} leftIcon={<ArrowBigTop/>} >
+      { showButton && 
+      <Button id="top" onClick={scrollToTop} type="button" className={classes.btn} leftIcon={<ArrowBigTop/>} >
         Back to Top
       </Button>
-    </>
+      }
+    </Box>
   );
 };
 export default Example2;
 
-const useStyles = createStyles((theme, _params) => ({
+const useStyles = createStyles((theme, _params, getRef) => ({
+  wrapper: {
+    position: "relative",
+    backgroundColor: theme.colors.gray[2],
+
+    [`& .${getRef('btn')}`]: {
+      position: "fixed",
+      bottom: "calc(var(--mantine-footer-height, 0px) + 16px)",
+      right: "calc(var(--mantine-aside-width, 0px) + 16px)"
+    }
+  },
   btn: {
+    ref: getRef('btn'),
     backgroundColor: theme.colors.blue[5],
     padding: theme.spacing.sm,
     borderRadius: theme.spacing.sm,
-    position: "fixed",
-    bottom: theme.spacing.lg,
-    right: theme.spacing.lg
-  }
+  },
 }))

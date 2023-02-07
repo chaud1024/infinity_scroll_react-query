@@ -5,7 +5,7 @@ export const api = axios.create({
 });
 
 export const getPostsPage = async (pageParam = 1, options = {}) => {
-  // infinity scroll & infinite query are sensually versions of pagenation
+  // infinity scroll & infinite query are essentially versions of pagenation
   // it will be requesting one page of result at a time
   // set pageParam which has a default that is 1 if it's not provided
   // then there will be an options param, its default value will be an empty object if that options param won't be provided
