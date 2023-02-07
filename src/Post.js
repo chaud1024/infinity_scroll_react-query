@@ -18,13 +18,13 @@ const Post = React.forwardRef(({ post }, ref) => {
   // only the last result of the page of results will receive that ref
   // so if there's a ref, it's going to set the article with rhe ref,
   // if there's not, it's going to have the article without the ref
-  const content = ref ? (
+  const postContent = ref ? (
     <article ref={ref}>{postBody}</article>
   ) : (
     <article>{postBody}</article>
   );
 
-  return content;
+  return postContent;
 });
 
 export default Post;
@@ -36,5 +36,5 @@ export default Post;
 const useStyles = createStyles((theme, _params) => ({
   postText: {
     color: theme.colors.gray[0]
-  }
+  } 
 }))
