@@ -2,8 +2,13 @@ import {  useRef, useCallback } from "react";
 import Post from "./Post";
 import { useInfiniteQuery } from "react-query";
 import { getPostsPage } from "./api/axios";
+import { Button, Text, Title } from "@mantine/core";
+import { ArrowBigTop } from "tabler-icons-react"
+import { createStyles } from '@mantine/core';
+
 
 const Example2 = () => {
+  const { classes } = useStyles();
 
   const { fetchNextPage, hasNextPage, isFetchingNextPage, data, status,  error } = useInfiniteQuery('/posts', ({ pageParam = 1 }) => getPostsPage(pageParam), {
     getNextPageParam: (lastPage, allPages) => {
@@ -49,17 +54,28 @@ const Example2 = () => {
 
   return (
     <>
-      <h1 id="top">
+      <Title order={3} id="top">
         &infin; Infinite Query &amp; Scroll
         <br />
         &infin; Ex. 2 - React Query
-      </h1>
+      </Title>
       {content}
-      {isFetchingNextPage && <p className="center">Loading More Posts...</p>}
-      <span className="center btn">
-        <a href="#top">Back to Top</a>
-      </span>
+      {isFetchingNextPage && <Text className="center">Loading More Posts...</Text>}
+      <Button component="a" href="#top" className={classes.btn} leftIcon={<ArrowBigTop/>} >
+        Back to Top
+      </Button>
     </>
   );
 };
 export default Example2;
+
+const useStyles = createStyles((theme, _params) => ({
+  btn: {
+    backgroundColor: theme.colors.blue[5],
+    padding: theme.spacing.sm,
+    borderRadius: theme.spacing.sm,
+    position: "fixed",
+    bottom: theme.spacing.lg,
+    right: theme.spacing.lg
+  }
+}))

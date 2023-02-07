@@ -1,13 +1,16 @@
 import React from "react";
+import { Blockquote, createStyles, Text, Title } from '@mantine/core';
 
 // we will receive destructured post and ref
 const Post = React.forwardRef(({ post }, ref) => {
+  const { classes } = useStyles();
   // define postBody
   const postBody = (
     <>
-      <h2>{post.title}</h2>
-      <p>{post.body}</p>
-      <p>Post ID : {post.id}</p>
+      <Title order={3}>{post.title}</Title>
+      <Blockquote color="yellow" cite={`- Post ID : ${post.id}`}>
+        <Text className={classes.postBody}>{post.body}</Text>
+      </Blockquote>
     </>
   );
 
@@ -29,3 +32,9 @@ export default Post;
 // components can't have refs on them without this
 // on the Example1.js, the last element in the content, we're going to put a ref
 // we will get an error if we didn't use a forward ref in this component
+
+const useStyles = createStyles((theme, _params) => ({
+  postBody: {
+    color: theme.colors.gray[0]
+  }
+}))
